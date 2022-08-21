@@ -68,7 +68,7 @@ app.post("/api/v1/fileUpload", upload.single("file"), async (req, res) => {
     });
   }
 });
-
-app.listen(process.env.SERVER_PORT, () => {
-  console.log("Listening at http://localhost:" + process.env.SERVER_PORT);
+const PORT = process.env.SERVER_PORT || 3000
+app.listen(PORT, () => {
+  console.log("Listening at http://localhost:" + PORT);
 });
