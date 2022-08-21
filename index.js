@@ -8,8 +8,9 @@ app.use(cors());
 
 let { createClient } = require("@supabase/supabase-js");
 const supabaseUrl = "https://pkeosknanvmwrrmirmim.supabase.co";
-
-const supabaseKey = process.env.SUPABASE_KEY;
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBrZW9za25hbnZtd3JybWlybWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTk3OTI0MjUsImV4cCI6MTk3NTM2ODQyNX0.3x9ORYFqDS2dzeIAYPfLJs1ZXkrquNMaqPW28RmzZuo"
+const BUCKET_NAME = "uploads"
+const supabaseKey = SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const storage = multer.diskStorage({
@@ -49,7 +50,7 @@ app.post("/api/v1/fileUpload", upload.single("file"), async (req, res) => {
         console.log(err);
       }
       const { data, error } = await supabase.storage
-        .from(process.env.BUCKET_NAME)
+        .from(BUCKET_NAME)
         .upload(`${file}`, fileStream, {
           cacheControl: "3600",
           upsert: false,
