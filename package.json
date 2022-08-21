@@ -1,0 +1,28 @@
+{
+  "name": "superbase_file_upload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@supabase/supabase-js": "^1.35.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahulkallur/superbase_file_upload.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rahulkallur/superbase_file_upload/issues"
+  },
+  "homepage": "https://github.com/rahulkallur/superbase_file_upload#readme"
+}
