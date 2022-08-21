@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/rahulkallur/superbase_file_upload/issues"
   },
+  "engines": {
+    "node":"14.18.2"
+  },
   "homepage": "https://github.com/rahulkallur/superbase_file_upload#readme"
 }
