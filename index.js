@@ -13,27 +13,27 @@ const BUCKET_NAME = "uploads"
 const supabaseKey = SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const storage = multer.diskStorage({
-  destination: "./",
-  filename: (req, file, cb) => {
-    let fileExtension = file.originalname.split(".");
-    let fileName =
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15) +
-      "." +
-      fileExtension[1];
-    return cb(null, `${fileName}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: "./",
+//   filename: (req, file, cb) => {
+//     let fileExtension = file.originalname.split(".");
+//     let fileName =
+//       Math.random().toString(36).substring(2, 15) +
+//       Math.random().toString(36).substring(2, 15) +
+//       "." +
+//       fileExtension[1];
+//     return cb(null, `${fileName}`);
+//   },
+// });
 
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 10000000,
-  },
-});
+// const upload = multer({
+//   storage: storage,
+//   limits: {
+//     fileSize: 10000000,
+//   },
+// });
 
-app.post("/api/v1/fileUpload", upload.single("file"), async (req, res) => {
+app.post("/api/v1/fileUpload", multer({storage: multer.memoryStorage()}).single("file"), async (req, res) => {
   var Fs = require("fs");
   if (!req.file) {
     return res
@@ -42,31 +42,37 @@ app.post("/api/v1/fileUpload", upload.single("file"), async (req, res) => {
   }
 
   if (req.file) {
-    var file = req.file.path;
-    console.log(file);
-    var fileStream = Fs.createReadStream(file);
-    var fileStat = Fs.stat(file, async function (err, stats) {
-      if (err) {
-        console.log(err);
-      }
+    // var file = req.file.path;
+    // console.log(file);
+    // var fileStream = Fs.createReadStream(file);
+    // var fileStat = Fs.stat(file, async function (err, stats) {
+    //   if (err) {
+    //     console.log(err);
+    //   }
+    let originalName = req.file.originalname.split(".")
+    let fileName =
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15) +
+      "." +
+      originalName[1]
       const { data, error } = await supabase.storage
         .from(BUCKET_NAME)
-        .upload(`${file}`, fileStream, {
+        .upload(`${fileName}`, req.file.buffer, {
           cacheControl: "3600",
           upsert: false,
         });
       if (data != null) {
-        Fs.unlink(req.file.path, function (err) {
-          if (err) console.log(err);
-          console.log("file deleted successfully");
-        });
-        res.end(req.file.filename);
+        // Fs.unlink(req.file.path, function (err) {
+        //   if (err) console.log(err);
+        //   console.log("file deleted successfully");
+        // });
+        res.end(fileName);
       } else {
         res
           .status(401)
           .send("Unable to upload file.Please try after some time.");
       }
-    });
+    // });
   }
 });
 const PORT = process.env.SERVER_PORT || 3000
