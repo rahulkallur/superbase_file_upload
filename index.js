@@ -55,6 +55,7 @@ app.post("/api/v1/fileUpload", multer({storage: multer.memoryStorage()}).single(
       Math.random().toString(36).substring(2, 15) +
       "." +
       originalName[1]
+      console.log("File Name:",fileName)
       const { data, error } = await supabase.storage
         .from(BUCKET_NAME)
         .upload(`${fileName}`, req.file.buffer, {
